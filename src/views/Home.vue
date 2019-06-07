@@ -1,11 +1,14 @@
 <template>
   <div class="hello">
-    <Chart :data="chartData" v-bind="{ width, height }"></Chart>
+    <div class="container bg-gray-100 p-8 rounded">
+      <h3 class="text-lg">Force Directed Graph</h3>
+      <ForceDirectedGraph :data="chartData" v-bind="{ width, height }" />
+    </div>
   </div>
 </template>
 
 <script>
-import Chart from '@/components/Chart.vue';
+import ForceDirectedGraph from '@/components/ForceDirectedGraph.vue';
 
 export default {
   name: 'Home',
@@ -15,24 +18,27 @@ export default {
   },
 
   components: {
-    Chart
+    ForceDirectedGraph
   },
 
   data() {
     return {
-      chartData: [],
-      width: 500,
-      height: 200
+      chartData: {
+        links: [],
+        nodes: []
+      },
+      width: 1024,
+      height: 600
     };
   },
 
-  created() {
-    this.getData().then(data => (this.chartData = data));
+  async created() {
+    this.chartData = await this.getData();
   },
 
   methods: {
-    getData() {
-      return Promise.resolve([99, 71, 78, 25, 36, 92]);
+    async getData() {
+      return (await fetch('/data/miserables.json')).json();
     }
   }
 };
