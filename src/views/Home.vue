@@ -1,18 +1,39 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+  <div class="hello">
+    <Chart :data="chartData" v-bind="{ width, height }"></Chart>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from "@/components/HelloWorld.vue";
+import Chart from '@/components/Chart.vue';
 
 export default {
-  name: "home",
+  name: 'Home',
+
+  props: {
+    msg: String
+  },
+
   components: {
-    HelloWorld
+    Chart
+  },
+
+  data() {
+    return {
+      chartData: [],
+      width: 500,
+      height: 200
+    };
+  },
+
+  created() {
+    this.getData().then(data => (this.chartData = data));
+  },
+
+  methods: {
+    getData() {
+      return Promise.resolve([99, 71, 78, 25, 36, 92]);
+    }
   }
 };
 </script>
